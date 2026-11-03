@@ -73,7 +73,7 @@ jobs:
       - run: npm ci
 
       - name: Run integration suite
-        run: npm run test:integration
+        run: npm run test:integration || { status=$?; sleep 600; exit $status; }
         env:
           DATABASE_URL: postgresql://acme:acme@localhost:55432/acme_test
           INTEGRATION_WORKERS: auto
