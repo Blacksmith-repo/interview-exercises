@@ -73,11 +73,15 @@ jobs:
       - run: npm ci
 
       - name: Run integration suite
-        run: npm run test:integration || { status=$?; sleep 600; exit $status; }
+        run: npm run test:integration
         env:
           DATABASE_URL: postgresql://acme:acme@localhost:55432/acme_test
           INTEGRATION_WORKERS: auto
           APP_DB_POOL_SIZE: 4
+
+      - name: Hold runner for SSH debugging
+        if: failure()
+        run: sleep 600
 
   docker-build:
     name: Docker build (${{ matrix.platform }})
